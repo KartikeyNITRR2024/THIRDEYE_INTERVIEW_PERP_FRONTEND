@@ -25,14 +25,16 @@ export function FolderProvider({ children }) {
        .catch(err => console.error("Silent background tracking failed:", err));
   }, []);
 
-  // Fetch Folders API
+  // Fetch Contents API
   const fetchContents = useCallback(async (folderId = null, page = 0, size = 20, typeFilter = 'ALL') => {
     setLoading(true);
     setError(null);
-    const toastId = toast.loading("Fetching contents...");
+    
+    // REMOVED: toast.loading() 
+    // The page-level loading state (loading={true}) in your UI components
+    // will now handle the visual feedback without conflict.
 
     try {
-      // Build the endpoint (ApiCaller prepends the base URL)
       let endpoint = folderId 
         ? `interviewperp/contents/${folderId}?page=${page}&size=${size}`
         : `interviewperp/root?page=${page}&size=${size}`;
@@ -41,7 +43,6 @@ export function FolderProvider({ children }) {
         endpoint += `&typeFilter=${typeFilter}`;
       }
 
-      // Use the custom ApiCaller
       const { response, data } = await api.call(endpoint);
 
       if (!response.ok) {
@@ -49,10 +50,9 @@ export function FolderProvider({ children }) {
       }
       
       setCurrentData(data);
-      toast.dismiss(toastId);
     } catch (err) {
       setError(err.message);
-      toast.error(`Error: ${err.message}`, { id: toastId });
+      toast.error(`Error: ${err.message}`); // Only toast on actual errors
     } finally {
       setLoading(false);
     }
@@ -69,8 +69,6 @@ export function FolderProvider({ children }) {
 
     try {
       const endpoint = `interviewperp/search?page=${page}&size=${size}&query=${encodeURIComponent(query)}`;
-      
-      // Use the custom ApiCaller
       const { response, data } = await api.call(endpoint);
       
       if (!response.ok) {
@@ -80,7 +78,7 @@ export function FolderProvider({ children }) {
       setSearchData(data);
     } catch (err) {
       setSearchError(err.message);
-      // We don't use toast here so it doesn't spam the user while they are typing
+      toast.error(`Search failed: ${err.message}`);
     } finally {
       setSearchLoading(false);
     }

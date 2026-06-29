@@ -6,6 +6,7 @@ import Search from "./pages/Search";
 import About from "./pages/About";
 import Connect from "./pages/Connect";
 import Course from "./pages/Course";
+import FileViewer from "./pages/FileViewer";
 import { FolderProvider } from "./context/FolderContext";
 import { CourseProvider } from "./context/CourseContext";
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/search" element={<Search />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/connect" element={<Connect />} />
+                <Route path="/view/:id" element={<FileViewer />} />
               </Routes>
             </main>
 

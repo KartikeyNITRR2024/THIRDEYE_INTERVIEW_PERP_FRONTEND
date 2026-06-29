@@ -1,28 +1,38 @@
-import { FaList, FaFolder, FaFileAlt } from "react-icons/fa";
+import { Layers, Folder, FileText } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function TypeFilter({ currentFilter, onFilterChange }) {
   const filters = [
-    { id: 'ALL', label: 'All', icon: <FaList /> },
-    { id: 'FOLDER', label: 'Folders', icon: <FaFolder /> },
-    { id: 'FILE', label: 'Files', icon: <FaFileAlt /> },
+    { id: 'ALL', label: 'All', icon: Layers },
+    { id: 'FOLDER', label: 'Folders', icon: Folder },
+    { id: 'FILE', label: 'Files', icon: FileText },
   ];
 
   return (
-    <div className="flex bg-slate-100 p-1 rounded-md shrink-0">
-      {filters.map((filter) => (
-        <button 
-          key={filter.id}
-          onClick={() => onFilterChange(filter.id)} 
-          className={`flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
-            currentFilter === filter.id 
-              ? 'bg-white shadow-sm text-blue-600' 
-              : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
-          }`}
-        >
-          <span>{filter.icon}</span>
-          <span>{filter.label}</span>
-        </button>
-      ))}
+    <div className="flex bg-slate-100/80 p-1 rounded-xl shrink-0 w-full sm:w-auto overflow-x-auto no-scrollbar">
+      {filters.map((filter) => {
+        const Icon = filter.icon;
+        const isActive = currentFilter === filter.id;
+        return (
+          <button 
+            key={filter.id}
+            onClick={() => onFilterChange(filter.id)} 
+            className={`relative flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors z-10 ${
+              isActive ? 'text-indigo-700' : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            {isActive && (
+              <motion.div 
+                layoutId="activeFilter" 
+                className="absolute inset-0 bg-white shadow-sm rounded-lg -z-10"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+            <Icon className={`w-4 h-4 ${isActive ? 'stroke-[2.5px]' : ''}`} />
+            <span>{filter.label}</span>
+          </button>
+        )
+      })}
     </div>
   );
 }

@@ -1,13 +1,9 @@
 import { useState } from "react";
-import { FaPaperPlane } from "react-icons/fa";
+import { Bot } from "lucide-react";
 
 export default function CourseForm({ onSubmit, isSubmitting }) {
   const [formData, setFormData] = useState({
-    email: "",
-    yoe: "",
-    company: "",
-    jobDescription: "",
-    jobUrl: "",
+    email: "", yoe: "", company: "", jobDescription: "", jobUrl: "",
   });
 
   const handleChange = (e) => {
@@ -20,88 +16,71 @@ export default function CourseForm({ onSubmit, isSubmitting }) {
     onSubmit(formData);
   };
 
+  const inputClasses = "w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:bg-white transition-all outline-none text-base md:text-sm";
+  const labelClasses = "block text-sm font-semibold text-slate-700 mb-1.5";
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-300">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         <div className="md:col-span-3">
-          <label className="block text-sm font-medium text-slate-700 mb-1">Email Address *</label>
+          <label className={labelClasses}>Delivery Email <span className="text-indigo-500">*</span></label>
           <input 
-            type="email" 
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white"
-            placeholder="where should we send the course?"
+            type="email" name="email" required value={formData.email} onChange={handleChange}
+            className={inputClasses} placeholder="architect@example.com"
           />
         </div>
         <div className="md:col-span-1">
-          <label className="block text-sm font-medium text-slate-700 mb-1">Years of Exp</label>
+          <label className={labelClasses}>Experience</label>
           <input 
-            type="text" 
-            name="yoe"
-            value={formData.yoe}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white"
-            placeholder="e.g. 3"
+            type="text" name="yoe" value={formData.yoe} onChange={handleChange}
+            className={inputClasses} placeholder="e.g. 3 YOE"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Company *</label>
+          <label className={labelClasses}>Target Company <span className="text-indigo-500">*</span></label>
           <input 
-            type="text" 
-            name="company"
-            required
-            value={formData.company}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white"
-            placeholder="Company Name"
+            type="text" name="company" required value={formData.company} onChange={handleChange}
+            className={inputClasses} placeholder="e.g. Amazon, Google, Atlassian"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Job URL *</label>
+          <label className={labelClasses}>Job URL <span className="text-indigo-500">*</span></label>
           <input 
-            type="url" 
-            name="jobUrl"
-            required
-            value={formData.jobUrl}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white"
-            placeholder="https://..."
+            type="url" name="jobUrl" required value={formData.jobUrl} onChange={handleChange}
+            className={inputClasses} placeholder="https://careers..."
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Job Description *</label>
+        <label className={labelClasses}>Job Description / Tech Stack <span className="text-indigo-500">*</span></label>
         <textarea 
-          name="jobDescription"
-          rows="6"
-          required
-          value={formData.jobDescription}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white resize-none"
-          placeholder="Paste the full job description here..."
+          name="jobDescription" rows="5" required value={formData.jobDescription} onChange={handleChange}
+          className={`${inputClasses} font-mono text-sm resize-none`}
+          placeholder="Paste requirements here (e.g., Java, Spring Boot, Microservices, Kafka...)"
         ></textarea>
       </div>
 
       <button 
         type="submit" 
         disabled={isSubmitting}
-        className={`w-full font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center ${
+        className={`w-full font-bold py-4 px-4 rounded-xl transition-all flex items-center justify-center text-lg ${
           isSubmitting 
-            ? "bg-blue-400 text-white cursor-not-allowed" 
-            : "bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md"
+            ? "bg-indigo-300 text-white cursor-not-allowed" 
+            : "bg-slate-900 text-white hover:bg-indigo-600 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
         }`}
       >
         {isSubmitting ? (
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+          <div className="flex items-center space-x-2">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            <span>AI Processing...</span>
+          </div>
         ) : (
           <>
-            <FaPaperPlane className="mr-2" /> Generate Course
+            <Bot className="mr-2 w-5 h-5" /> Generate AI Curriculum
           </>
         )}
       </button>
